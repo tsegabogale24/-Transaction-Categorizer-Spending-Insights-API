@@ -12,6 +12,20 @@ services:
       - "${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ${API_CONTAINER_NAME}
+    env_file:
+      - ./backend/.env
+    environment:
+      PORT: ${API_PORT}
+      DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - "${API_HOST_PORT}:${API_CONTAINER_PORT}"
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:
